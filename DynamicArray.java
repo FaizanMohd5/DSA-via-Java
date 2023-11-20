@@ -93,14 +93,4 @@ public class DynamicArray {
     public boolean isArrayEmpty(){
         return lastIndex==-1;
     }
-
-    //11. Get value stored at specific index
-    public Object getValueAt(int index){
-        return ptr[index];
-    }
-
-    //12. Get capacity of array
-    public int getCapacity(){
-        return ptr.length;
-    }
 }
