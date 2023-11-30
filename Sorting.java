@@ -5,4 +5,5 @@ public interface Sorting {
     void quickSortCode(int low, int high);
 
     void mergeSortCode(int low, int high);
+    void heapSortCode();
 }
