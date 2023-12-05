@@ -108,18 +108,150 @@ public class DynamicArray implements Sorting {
         System.out.println("Last Index: " + lastIndex + " length of array: " + getCapacity());
     }
 
-    
+    //override bubble sort
+    @Override
+    public void bubbleSort() {
+        if (isArrayEmpty())
+            throw new ArrayIndexOutOfBoundsException("Array is empty.");
+        boolean swapped;
+        for (int round = 0; round < lastIndex; round++) {
+            swapped = false;
+            for (int i = 0; i < lastIndex - round; i++) {
+                if (ptr[i] > ptr[i+1]) {
+                    int temp = ptr[i];
+                    ptr[i] = ptr[i+1];
+                    ptr[i+1] = temp;
+                    swapped = true;
+                }
+            }
+            if(!swapped) break;
+        }
+    }
+
+    //override selectionSort
+    @Override
+    public void selectionSort() {
+        if(isArrayEmpty())
+            throw new ArrayIndexOutOfBoundsException("Array is empty.");
+        int min = 0;
+        for (int i=0; i <= lastIndex; i++){
+            min = i;
+            for(int j=i+1; j <= lastIndex; j++){
+                if(ptr[min] > ptr[j])
+                    min = j;
+            }
+            int temp = ptr[i];
+            ptr[i] = ptr[min];
+            ptr[min] = temp;
+        }
+    }
+
+    //override insertion sort
+
+    @Override
+    public void insertionSort() {
+        if(isArrayEmpty())
+            throw new ArrayIndexOutOfBoundsException("Array is empty.");
+        if(lastIndex==0)
+            return;
+        int i, j;
+        for(i=1; i <= lastIndex; i++){
+            int pivot = ptr[i];
+            for(j = i-1; j>=0 && pivot < ptr[j]; j--){
+                ptr[j+1] = ptr[j];
+            }
+            ptr[j+1] = pivot;
+        }
+    }
+
+    //override quicksort
+    public int partition(int low, int high){
+        int pivot = ptr[low]; //first element as pivot
+        int i = low;
+        int j = high;
+        while(i<=j) {
+            while ( pivot >= ptr[i] )
+                i++;
+            while ( pivot < ptr[j] )
+                j--;
+            if (i < j) {
+                int temp = ptr[i];
+                ptr[i] = ptr[j];
+                ptr[j] = temp;
+            }
+        }
+        int temp = ptr[low];
+        ptr[low] = ptr[j];
+        ptr[j] = temp;
+        return j;
+    }
+    @Override
+    public void quickSortCode(int low, int high){
+        if(low < high){
+            int loc = partition(low, high);
+            //Above code will set pivot to correct position and return its index
+            quickSortCode(low, loc-1);
+            quickSortCode(loc+1, high);
+        }
+    }
+    public void quickSort(){
+        quickSortCode(0, lastIndex);
+    }
+
+    //merge sort
+    @Override
+    public void mergeSortCode(int low, int high) {
+        if(low < high){
+            int mid = (low + high) / 2;
+            mergeSortCode(low, mid);
+            mergeSortCode(mid+1, high);
+            merge(low, mid, high);
+        }
+    }
+    public void merge(int low, int mid, int high){
+        //Compute size of two array
+        int n1 = mid - low + 1;
+        int n2 = high - mid;
+        //create two arrays
+        int[] a = new int[n1];
+        int[] b = new int[n2];
+        //noinspection ManualArrayCopy
+        for(int i=0; i<n1; i++)
+            a[i] = ptr[low + i];
+        for(int i=0; i<n2; i++)
+            b[i] = ptr[mid+1+i];
+        int i = 0;
+        int j = 0;
+        int k = low;
+        while(i < n1 && j < n2){
+            if(a[i] <= b[j])
+                ptr[k] = a[i++];
+            else
+                ptr[k] = b[j++];
+            k++;
+        }
+        while(i < n1)
+            ptr[k++] = a[i++];
+        while(j < n2)
+            ptr[k++] = b[j++];
+    }
+
+    void mergeSort(){
+        mergeSortCode(0, lastIndex);
+    }
+
     // driver method
     public static void driver() {
         DynamicArray dynArray = new DynamicArray(4);
 
         dynArray.appendElement(10);
-        dynArray.appendElement(9);
-        dynArray.appendElement(1);
-        dynArray.appendElement(2);
-        dynArray.appendElement(15);
-        dynArray.appendElement(16);
+        dynArray.appendElement(20);
+        dynArray.appendElement(30);
+        dynArray.appendElement(40);
         dynArray.appendElement(11);
+        dynArray.appendElement(21);
+        dynArray.appendElement(31);
+        dynArray.appendElement(41);
 
         dynArray.mergeSort();
         dynArray.display();
