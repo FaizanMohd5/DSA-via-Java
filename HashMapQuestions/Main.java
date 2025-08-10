@@ -9,7 +9,6 @@ public class Main
 	}
 }
 
-
 class OrdinalNumber {
     
     private final static Map<Integer, String> map = Map.of(
