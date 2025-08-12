@@ -9,6 +9,7 @@ public class BST {
         private Node right;
         public Node getLeft() {
             return left;
+            
         }
         public void setLeft(Node left) {
             this.left = left;
